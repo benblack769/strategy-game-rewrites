@@ -6,4 +6,4 @@ The game client is currently deployed on a static web server [here](http://scrip
 
 To give an impression of what it looks like, here is a screenshot of a position in a game I was playing by myself:
 
-![screenshot](docs/game_screenshot.PNG)
+![screenshot](large-battles-web/docs/game_screenshot.PNG)
