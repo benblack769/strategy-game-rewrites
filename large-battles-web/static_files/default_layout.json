@@ -1,0 +1,66 @@
+[
+[
+    {
+        "id": "build_farm",
+        "icon": "farm.png"
+    },
+    {
+        "id": "build_barracks",
+        "icon": "barracks.png"
+    },
+    {
+        "id": "build_armory",
+        "icon": "armory.png"
+    },
+    {
+        "id": "build_ba_shop",
+        "icon": "bow-arrow-shop.png"
+    },
+    {
+        "id": "build_sword_shop",
+        "icon": "sword-shop.png"
+    },
+    {
+        "id": "build_pike_shop",
+        "icon": "pike-shop.png"
+    },
+    {
+        "id": "build_cat_factory",
+        "icon": "catapult-factory.png"
+    },
+    {
+        "id": "build_stable",
+        "icon": "stable.png"
+    },
+    {
+        "id": "build_town_center",
+        "icon": "well.png"
+    }
+],
+[
+    {
+        "id":  "move",
+        "text": "Move"
+    },
+    {
+        "id": "attack",
+        "text": "Attack"
+    },
+    {
+        "id": "buy",
+        "text": "Buy"
+    },
+    {
+        "id": "attach",
+        "text": "Equip"
+    },
+    {
+        "id": "move_multi",
+        "text": "MoveMM"
+    },
+    {
+        "id": "move_path",
+        "text": "MovePath"
+    }
+]
+]

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <script> {{get_remote_file("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")}}</script>
+    <script> {{get_remote_file("https://cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.js")}}</script>
+
+    <style>
+    {{get_remote_file("https://cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.css")}}
+    {{get_local_file("style.css")}}
+    </style>
+
+    <script id="default_layout_src" type="application/json">{{get_local_file("default_layout.json")}}</script>
+    <script id="long_game_record" type="application/json">{{get_local_file("../game_records/fixed_large_record.json")}}</script>
+    <script id="other_long_game_record" type="application/json">{{get_local_file("../game_records/second_large_record.json")}}</script>
+    <script charset="utf-8">{{get_local_file("bundle.js")}}</script>
+
+    <link rel="icon" href="{{make_data_url_of_type("favicon.ico","image/x-icon")}}" type="image/x-icon" />
+
+    <title>Script Wars</title>
+</head>
+
+<body>
+<div class="navbar">
+    <div id="menu">
+        <span id="home_naventry" class="menu_entry">Home</span>
+        <span id="rankings_naventry" class="menu_entry">Rankings</span>
+        <span id="archive_naventry" class="menu_entry">Archive</span>
+        <span id="live_connect_naventry" class="menu_entry">Start Game</span>
+        <span id="game_naventry" class="menu_entry">Game</span>
+        <span id="train_naventry" class="menu_entry">Train</span>
+    </div>
+    <div id="profile">
+        <div id="signup_login">
+            <span id="signup_naventry" class="menu_entry">Signup</span>
+            <span id="login_naventry" class="menu_entry">Login</span>
+        </div>
+        <div id="login_display" hidden>
+            <span class="username_display">Logged in as</span>
+            <span id="username_navbar_display" class="username_display"></span>
+            <span id="logout_naventry" class="menu_entry">Logout</span>
+        </div>
+    </div>
+</div>
+
+<div id="main_page_view">
+    <div id="signup_page" class="page_level" hidden>
+          <span>Username:</span><br>
+          <input type="text" id="username_register_input"/>
+          <br><br>
+          <button id="submit_username">Submit</button>
+
+          <div id="password_reveal" hidden>
+              Password:<br>
+              <span id="password_register_reveal"> </span>
+              <br>
+              <b>If you wish to be able to use this account over time, save this password somewhere it will not be lost</b>
+          </div>
+          <div id="username_error">
+          </div>
+    </div>
+    <div id="login_page" class="page_level" hidden>
+          Username:<br>
+          <input type="text" id="username_login_input"/>
+          <br>
+          Password:<br>
+          <input type="text" id="password_login_input"/>
+          <br>
+          <br>
+          <button id="submit_login">Submit</button>
+          <p id="login_error"></p>
+    </div>
+    <div id="main_description_page" class="page_level">
+
+    </div>
+    <div id="rankings_page" class="page_level" hidden>
+        <div id="table_container">
+            <table id="my-final-table">
+              <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="archive_page" class="page_level" hidden>
+        <div class="training_pannel1" id="archive_table_div">
+            <table id="archive-table">
+              <thead>
+                  <tr>
+                  <th>Date</th>
+                  <th>Result</th>
+                  <th>Record</th>
+                </tr>
+              </thead>
+              <tbody id="archive-body">
+              </tbody>
+            </table>
+        </div>
+        <div id="analysis_basediv" class="training_pannel2"> </div>
+        <div id="archive_width_control" class="training_width_control"> </div>
+    </div>
+    <div id="live_games" class="page_level" hidden>
+        <div id="main_live_game_page">
+            <table id="live_games_table">
+               <colgroup>
+                 <col class="live_table_col1">
+                 <col class="live_table_col2">
+               </colgroup>
+                <thead id="live_game_table_head">
+                    <tr>
+                        <th>Username</th>
+                        <th>Request status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Self Play</th>
+                        <th><button id="self_play_game_button">Start Game</button></th>
+                    </tr>
+                </tbody>
+                <tbody id="requested_games_table_body">
+
+                </tbody>
+                <tbody id="waiting_games_table_body">
+
+                </tbody>
+            </table>
+        </div>
+        <div id="request_issued_live_games" class="gray_page_overlay">
+            <div class="central_cancel_box">
+                <div class="central_cancel_message horizontal-center">
+                    <span>Request issued. Waiting for response from: </span>
+                    <span id="request_username_request"></span>
+                </div>
+                <div class="central_cancel_button_holder">
+                    <span class="central_cancel_button">Cancel</span>
+                </div>
+            </div>
+        </div>
+        <div id="waiting_for_game_live_games" class="gray_page_overlay">
+            <div class="central_cancel_box">
+                <div class="central_cancel_message horizontal-center">
+                    <span>Game starting. Waiting for server to start game with: </span>
+                    <span id="game_starting_username"></span>
+                </div>
+                <div class="central_cancel_button_holder">
+                    <span class="central_cancel_button">Cancel</span>
+                </div>
+            </div>
+        </div>
+        <div id="error_message_live_games" class="gray_page_overlay">
+            <div class="central_cancel_box">
+                <div class="central_cancel_message horizontal-center">
+                    <span> Error with request: </span>
+                    <span id="error_message_lg"></span>
+                </div>
+                <div class="central_cancel_button_holder">
+                    <span class="central_cancel_button">Cancel</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="single_player_page" class="page_level" hidden>
+        <div id="single_page_game_overlay" class="game_overlay">
+        </div>
+
+        <div id="game_not_started_message" class="gray_page_overlay">
+            <div class="central_cancel_box">
+                <div class="central_cancel_message horizontal-center">
+                     No game running. Go to live pages to run game.
+                </div>
+                <div class="central_cancel_button_holder">
+                    <span class="central_cancel_button" id="goto_live_games">Ok</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="training_page" class="page_level" hidden>
+        <div id="best_move_pannel" class="game_overlay"> </div>
+        <!--<div id="train_pan_1" class="training_pannel1"> </div>
+        <div id="train_pan_2" class="training_pannel2"> </div>-->
+    </div>
+</div>
+<div id="canvas_images" hidden>
+    <img id="armor.png" src="{{make_data_url_png("images/armor.png")}}"/>
+    <img id="armory.png" src="{{make_data_url_png("images/armory.png")}}"/>
+    <img id="Background.png" src="{{make_data_url_png("images/Background.png")}}"/>
+    <img id="barracks.png" src="{{make_data_url_png("images/barracks.png")}}"/>
+    <img id="bow-arrow-shop.png" src="{{make_data_url_png("images/bow-arrow-shop.png")}}"/>
+    <img id="bow-arrow.png" src="{{make_data_url_png("images/bow-arrow.png")}}"/>
+    <img id="catapult-factory.png" src="{{make_data_url_png("images/catapult-factory.png")}}"/>
+    <img id="Catapult.png" src="{{make_data_url_png("images/Catapult.png")}}"/>
+    <img id="farm.png" src="{{make_data_url_png("images/farm.png")}}"/>
+    <img id="horse.png" src="{{make_data_url_png("images/horse.png")}}"/>
+    <img id="house.png" src="{{make_data_url_png("images/house.png")}}"/>
+    <img id="pike-shop.png" src="{{make_data_url_png("images/pike-shop.png")}}"/>
+    <img id="pike.png" src="{{make_data_url_png("images/pike.png")}}"/>
+    <img id="Soldier.png" src="{{make_data_url_png("images/Soldier.png")}}"/>
+    <img id="stable.png" src="{{make_data_url_png("images/stable.png")}}"/>
+    <img id="sword-shop.png" src="{{make_data_url_png("images/sword-shop.png")}}"/>
+    <img id="sword.png" src="{{make_data_url_png("images/sword.png")}}"/>
+    <img id="villager.png" src="{{make_data_url_png("images/villager.png")}}"/>
+    <img id="well.png" src="{{make_data_url_png("images/well.png")}}"/>
+</div>
+</body>
